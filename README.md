@@ -27,8 +27,18 @@ Automates commenting on BlackDuck BOM components after a scan. Reads project con
 
 #### Install
 
+Download `blackduck-audit.skill` from the [releases](https://github.tools.sap/I062843/my-skills/releases) page, then install it:
+
 ```bash
-npx skills add github.tools.sap/I062843/my-skills@blackduck-audit
+npx skills add ./blackduck-audit.skill
+```
+
+Or install directly from the `.skill` file in this repo:
+
+```bash
+# Clone and install
+git clone https://github.tools.sap/I062843/my-skills.git /tmp/my-skills
+npx skills add /tmp/my-skills/blackduck-audit.skill
 ```
 
 #### Setup
