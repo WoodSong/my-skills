@@ -1,0 +1,9 @@
+{
+  "baseUrl": "https://blackduck.example.com",
+  "accessToken": "your-personal-access-token",
+  "projectName": "my-android-project",
+  "versionName": "1.0.0",
+  "filters": {
+    "reviewStatus": "NOT_REVIEWED"
+  }
+}
