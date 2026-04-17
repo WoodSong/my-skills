@@ -25,6 +25,12 @@ Automates commenting on BlackDuck BOM components after a scan. Reads project con
 
 **Trigger words**: run a BlackDuck audit, process BD scan results, comment on vulnerability findings, `bd-audit`, `blackduck-audit`, `--component`, `delete-comments`, `ignore-commented`.
 
+#### Install
+
+```bash
+npx skills add github.tools.sap/I062843/my-skills@blackduck-audit
+```
+
 #### Setup
 
 ```bash
