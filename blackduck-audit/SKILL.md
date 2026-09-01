@@ -9,6 +9,7 @@ description: >
   workflow, audit a specific component (--component), delete existing BD comments
   (delete-comments / --delete-comments), or ignore commented components
   (ignore-commented / --ignore-commented).
+disable-model-invocation: true
 ---
 
 # BlackDuck Audit

@@ -1,0 +1,46 @@
+{
+  "skill_name": "create-review-PR",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've fixed the JVM compatibility bug in the dokka-convention plugin. The changes are staged. Commit them, push to origin, and open a PR against upstream main. My fork is at github.tools.sap/I062843/android-build and upstream is github.tools.sap/CloudAndroidSDK/android-build.",
+      "expected_output": "A commit with a clear why-focused message, branch pushed to origin with -u, a PR created against upstream with Summary + Test plan sections, the PR URL printed, and after ~60s the bot comments fetched and explained.",
+      "files": [],
+      "assertions": [
+        "The commit message uses imperative form and explains the motivation (not just 'what changed')",
+        "git push uses the -u flag to set upstream tracking",
+        "gh pr create targets the upstream repo (not the fork)",
+        "The PR body contains a Summary section and a Test plan section",
+        "The PR URL is printed to the user",
+        "Bot comments are fetched after PR creation (gh pr view ... --comments)",
+        "Each bot finding is explained to the user with a recommendation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "commit and push my changes, then open a PR. I've already got a branch called fix/null-pointer-exception. origin is my fork, upstream is the org repo.",
+      "expected_output": "Runs git status + diff to understand what's staged, writes a targeted commit, pushes to origin, creates the PR against upstream, and reviews any bot feedback.",
+      "files": [],
+      "assertions": [
+        "git status and git diff are run before committing",
+        "Only relevant files are staged (not git add -A blindly)",
+        "Commit message has a short subject line (<=72 chars)",
+        "PR is opened against upstream, not the user's fork",
+        "After PR creation, bot comments are retrieved and surfaced"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The PR bot left a comment on PR #14 saying we should use jvmToolchain instead of compilerOptions. Can you review what it said and address it?",
+      "expected_output": "Fetches the PR comments, identifies and explains the bot's finding, determines whether it's valid, applies the fix if valid, commits and pushes the follow-up, and confirms the PR is updated.",
+      "files": [],
+      "assertions": [
+        "gh pr view is used to retrieve bot comments",
+        "The bot finding is explained clearly to the user",
+        "The validity of the finding is evaluated (not blindly accepted or rejected)",
+        "If valid, a fix is applied and committed",
+        "The updated branch is pushed so the PR reflects the fix"
+      ]
+    }
+  ]
+}
