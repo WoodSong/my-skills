@@ -1,0 +1,25 @@
+{
+  "name": "my-skills",
+  "version": "1.0.0",
+  "description": "Lin Song's personal Claude Code skills — BlackDuck audit automation, PR workflow, and explain-series tools for code comprehension.",
+  "author": {
+    "name": "Lin Song"
+  },
+  "license": "MIT",
+  "keywords": [
+    "blackduck",
+    "audit",
+    "explain",
+    "pull-request",
+    "skills"
+  ],
+  "skills": [
+    "./blackduck-audit",
+    "./create-review-PR",
+    "./explain/explain-simple",
+    "./explain/feynman-analogy",
+    "./explain/jargon-buster",
+    "./explain/arch-breakdown",
+    "./explain/devil-advocate"
+  ]
+}

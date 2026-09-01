@@ -1,0 +1,22 @@
+{
+  "name": "my-skills",
+  "owner": {
+    "name": "Lin Song"
+  },
+  "description": "Lin Song's personal Claude Code skills collection.",
+  "plugins": [
+    {
+      "name": "my-skills",
+      "source": "./",
+      "description": "BlackDuck audit automation, PR workflow, and explain-series tools for code comprehension.",
+      "category": "engineering",
+      "keywords": [
+        "blackduck",
+        "audit",
+        "explain",
+        "pull-request",
+        "skills"
+      ]
+    }
+  ]
+}
