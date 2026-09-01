@@ -2,34 +2,41 @@
 
 A collection of Claude Code agent skills — self-contained automation scripts that Claude Code invokes when specific trigger conditions are met.
 
-## Repository Structure
+All skills in this repo are **user-invoked only** (`disable-model-invocation: true`): Claude will never trigger them automatically. Use them via their `/skill-name` slash command.
 
-Each skill lives in its own subdirectory:
+## Install
 
+### Option A: Install as a plugin (all skills at once)
+
+```bash
+git clone https://github.tools.sap/I062843/my-skills.git /tmp/my-skills
+claude plugin add /tmp/my-skills
 ```
-<skill-name>/
-├── SKILL.md          # Manifest: name, description, trigger conditions
-├── references/       # Supporting docs (schemas, API references, etc.)
-└── scripts/          # Python entry point(s)
+
+This registers all skills in the collection. After installing, run `/reload-plugins` in Claude Code to activate.
+
+### Option B: Install individual skills
+
+Download the `.skill` file for the skill you want, then:
+
+```bash
+npx skills add ./blackduck-audit.skill
 ```
 
-`SKILL.md` is the contract that tells Claude Code *when* to invoke the skill and *how*.
+Or install directly from this repo:
+
+```bash
+git clone https://github.tools.sap/I062843/my-skills.git /tmp/my-skills
+npx skills add /tmp/my-skills/blackduck-audit.skill
+```
 
 ---
 
 ## Skills
 
-### blackduck-audit
+### `/blackduck-audit`
 
 Automates commenting on BlackDuck BOM components after a scan. Reads project config from `bd-config.json`, fetches filtered BOM components, and applies standardized comments based on dependency type and upgrade guidance availability.
-
-**Trigger words**: run a BlackDuck audit, process BD scan results, comment on vulnerability findings, `bd-audit`, `blackduck-audit`, `--component`, `delete-comments`, `ignore-commented`.
-
-#### Install
-
-```bash
-npx skills add WoodSong/my-skills@blackduck-audit
-```
 
 #### Setup
 
@@ -37,7 +44,7 @@ npx skills add WoodSong/my-skills@blackduck-audit
 pip install requests
 ```
 
-Copy the sample and fill in your values:
+Copy the sample config and fill in your values:
 
 ```bash
 cp blackduck-audit/bd-config.json.sample bd-config.json
@@ -55,7 +62,7 @@ cp blackduck-audit/bd-config.json.sample bd-config.json
 }
 ```
 
-> `accessToken` is a BlackDuck personal access token — generate it from **BlackDuck UI → user icon → My Access Tokens**.  
+> `accessToken` — generate from **BlackDuck UI → user icon → My Access Tokens**.  
 > `projectName` and `versionName` must match exactly (case-sensitive).  
 > `filters` is optional; omit or set to `{}` to fetch all BOM components.
 
@@ -63,42 +70,81 @@ Supported filter keys: `reviewStatus`, `policyStatus`, `approvalStatus`.
 
 #### Usage
 
-Invoke via Claude Code using natural language — do not run the script directly:
-
 ```
-Run a BlackDuck audit using bd-config.json
-Audit only the "lifecycle-runtime" component
-Delete all existing BlackDuck comments
-Ignore all commented BOM components
+/blackduck-audit
+/blackduck-audit --component lifecycle-runtime
+/blackduck-audit --delete-comments
+/blackduck-audit --ignore-commented
 ```
 
 ---
 
+### `/create-review-PR`
+
+Runs the full commit → push → open PR → review bot comments workflow in one shot.
+
+#### Usage
+
+```
+/create-review-PR
+```
+
+---
+
+### Explain series
+
+Five skills for understanding code, errors, and technical documents.
+
+| Slash command | What it does |
+|---|---|
+| `/explain-simple` | Plain-language breakdown with a concrete example or analogy |
+| `/feynman-analogy` | Real-world analogy (kitchen, factory, city traffic…) mapped to the code |
+| `/jargon-buster` | Translates the 3 most confusing terms in the input |
+| `/arch-breakdown` | Why-How-What (Golden Circle) dissection of a design or proposal |
+| `/devil-advocate` | Summarises the plan, then stress-tests it for edge cases and failure modes |
+
+#### Usage
+
+Pass the content directly as an argument:
+
+```
+/explain-simple <paste code or error here>
+/feynman-analogy <paste architecture description>
+/jargon-buster <paste jargon-heavy doc>
+/arch-breakdown <paste design proposal>
+/devil-advocate <paste code or plan>
+```
+
+Or invoke with no argument — Claude will use the current conversation context.
+
+---
+
+## Repository Structure
+
+```
+<skill-name>/
+├── SKILL.md          # Manifest: name, description, trigger conditions
+├── references/       # Supporting docs (schemas, API references, etc.)
+└── scripts/          # Python entry point(s)
+
+.claude-plugin/
+├── plugin.json       # Plugin manifest (skill list, metadata)
+└── marketplace.json  # Self-hosted marketplace entry
+```
+
 ## Adding a New Skill
 
 1. Create a subdirectory: `mkdir <skill-name>`
-2. Add `SKILL.md` with the frontmatter Claude Code needs:
+2. Add `SKILL.md`:
 
 ```markdown
 ---
 name: <skill-name>
 description: >
-  One-paragraph description. Include trigger conditions explicitly so Claude
-  Code knows when to invoke this skill.
+  One-paragraph description including trigger conditions.
+disable-model-invocation: true
 ---
-
-# <Skill Title>
-
-## Overview
-...
-
-## Setup
-...
-
-## Usage
-...
 ```
 
-3. Add your script(s) under `scripts/`.
-4. Add any reference docs (schemas, API specs) under `references/`.
-5. Register the skill path in your Claude Code settings so it's discoverable.
+3. Add the path to `.claude-plugin/plugin.json` under `"skills"`.
+4. Run `claude plugin validate .` to verify the manifest.
