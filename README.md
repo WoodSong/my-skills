@@ -15,6 +15,25 @@ claude plugin add /tmp/my-skills
 
 This registers all skills in the collection. After installing, run `/reload-plugins` in Claude Code to activate.
 
+### Option B: Add as a marketplace (persistent, survives updates)
+
+Because this repo is on GitHub Enterprise (`github.tools.sap`) rather than public GitHub, the `"source": "github"` marketplace type is not supported. Instead, register it as a local path marketplace by adding the following to your `~/.claude/settings.json` under `extraKnownMarketplaces`:
+
+```json
+"extraKnownMarketplaces": {
+  "my-skills": {
+    "source": {
+      "source": "local",
+      "path": "/path/to/cloned/my-skills"
+    }
+  }
+}
+```
+
+Then browse and install via `/plugin` in Claude Code. The plugin will appear as `my-skills` in the marketplace list.
+
+> To keep skills up to date, run `git pull` in your cloned directory — no reinstall needed since the plugin path is read live.
+
 ### Option B: Install individual skills
 
 Download the `.skill` file for the skill you want, then:
