@@ -6,25 +6,37 @@ All skills in this repo are **user-invoked only** (`disable-model-invocation: tr
 
 ## Install
 
-### Option A: Install as a plugin (all skills at once)
+### Option A: Install directly from GitHub (recommended)
 
 ```bash
-git clone https://github.tools.sap/I062843/my-skills.git /tmp/my-skills
+claude plugin marketplace add WoodSong/my-skills
+```
+
+Then install from the marketplace via `/plugin` in Claude Code, or:
+
+```bash
+claude plugin install my-skills
+```
+
+### Option B: Install from a local clone
+
+```bash
+git clone https://github.com/WoodSong/my-skills.git /tmp/my-skills
 claude plugin add /tmp/my-skills
 ```
 
-This registers all skills in the collection. After installing, run `/reload-plugins` in Claude Code to activate.
+After installing, run `/reload-plugins` in Claude Code to activate.
 
-### Option B: Add as a marketplace (persistent, survives updates)
+### Option C: Add as a marketplace via settings.json
 
-Because this repo is on GitHub Enterprise (`github.tools.sap`) rather than public GitHub, the `"source": "github"` marketplace type is not supported. Instead, register it as a local path marketplace by adding the following to your `~/.claude/settings.json` under `extraKnownMarketplaces`:
+Add the following to your `~/.claude/settings.json` under `extraKnownMarketplaces`:
 
 ```json
 "extraKnownMarketplaces": {
   "my-skills": {
     "source": {
-      "source": "local",
-      "path": "/path/to/cloned/my-skills"
+      "source": "github",
+      "repo": "WoodSong/my-skills"
     }
   }
 }
@@ -32,22 +44,6 @@ Because this repo is on GitHub Enterprise (`github.tools.sap`) rather than publi
 
 Then browse and install via `/plugin` in Claude Code. The plugin will appear as `my-skills` in the marketplace list.
 
-> To keep skills up to date, run `git pull` in your cloned directory — no reinstall needed since the plugin path is read live.
-
-### Option B: Install individual skills
-
-Download the `.skill` file for the skill you want, then:
-
-```bash
-npx skills add ./blackduck-audit.skill
-```
-
-Or install directly from this repo:
-
-```bash
-git clone https://github.tools.sap/I062843/my-skills.git /tmp/my-skills
-npx skills add /tmp/my-skills/blackduck-audit.skill
-```
 
 ---
 
