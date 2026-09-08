@@ -7,6 +7,7 @@ description: >
   "review the PR bot comments", "check what the bot said", or "address bot feedback". The skill covers the entire
   lifecycle: crafting the commit message, pushing the branch, creating the PR with a structured description, waiting
   for the bot, and acting on its review comments — so invoke it even if the user only mentions one part of the chain.
+disable-model-invocation: true
 ---
 
 # create-review-PR
